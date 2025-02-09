@@ -23,7 +23,7 @@ This package is based on the paper:
 
 ---
 
-### **1️⃣ Stage 1: Dose Exploration (Early Stopping for Safety & Activity)**
+### **1️⃣ Stage 1: Dose Exploration**
 
 **Objective:** Identify biologically active and non-toxic doses.  
 
@@ -37,7 +37,7 @@ This package is based on the paper:
 
 ---
 
-### **2️⃣ Stage 2: Dose Monitoring (Randomized Screening for Clinical Efficacy)**
+### **2️⃣ Stage 2: Dose Monitoring**
 
 **Objective:** Among biologically active doses, identify those with acceptable toxicity and sufficient clinical efficacy.  
 **Decision Rules:**
@@ -54,18 +54,19 @@ This package is based on the paper:
 
 ---
 
-### **3️⃣ Stage 3: Dose Optimization (Final Selection Using RMST)**
+### **3️⃣ Stage 3: Dose Optimization**
 
 **Objective:** Among doses that pass Stage 2, identify the Optimal Therapeutic Dose (OTD) that maximizes long-term survival (YS) while maintaining acceptable toxicity and clinical efficacy. 
 
 **Decision Rules:**  
 - Prioritize doses that maximize restricted mean survival time (RMST).  
 - Eliminate doses with unacceptable toxicity (YT).  
+- Delete doses that show unacceptable clinical efficacy (YR).
 - Remove doses that fail to provide adequate survival benefit (YS).  
 
 **Interim Analyses in Stage 3:**  
 - First survival analysis conducted after 50% of patients are enrolled.  
-- Final selection** of the OTD at the end of the study based on RMST-based Bayesian model selection.  
+- Final selection of the Optimal Therapeutic Dose (OTD) is identified at the end of the study, identifying the dose that maximizes restricted mean survival time (RMST) while maintaining acceptable toxicity, sufficient biological activity, and clinical efficacy.
 
 ---
 
