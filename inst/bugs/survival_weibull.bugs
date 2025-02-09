@@ -1,0 +1,27 @@
+Survival_Weibull <- function(){
+
+  #likelihood
+  for(i in 1:Npat){
+    is.censored[i] ~ dinterval( YS[i], YS_cen[i] )
+    YS[i] ~ dweibull(alpha, lambda[i])
+    #YS[i] ~ dgen.gamma(1, lambda[i], alpha)
+    #lambda[i] = lambdaT[d[i]] * exp(delta1*YT[i] + delta2*YE[i])
+    lambda[i] = exp(lambdaT[d[i]] + delta1*YT[i] + delta2*YE[i] + delta3*YB[i])
+  }
+
+  for(j in 1:J){
+    #lambdaT[j] ~ dgamma(0.01, 0.01)
+    lambdaT[j] ~ dnorm(0, 0.01)
+  }
+  
+  # Define the prior
+  # mu_lambdaT ~ 
+  # tau_lambdaT ~ dgamma(0.001, 0.001)
+
+  alpha ~ dgamma(0.1, 0.1); I(1,)
+  delta1 ~ dnorm(0.000, 0.01)
+  delta2 ~ dnorm(0.000, 0.01)
+  delta3 ~ dnorm(0.000, 0.01)
+  
+}
+
