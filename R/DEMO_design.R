@@ -72,7 +72,7 @@ DEMO_design = function(doses = c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85),
                        Y_T_sim = c(0.01, 0.02, 0.03, 0.06, 0.13, 0.26),
                        Y_R_sim = c(0.04, 0.05, 0.08, 0.20, 0.35, 0.47),
                        delta1_sim = 3, delta2_sim = -2,
-                       lambdaT_sim = c(0.4, 0.1, 0.1, 0.3, 0.3, 0.3),
+                       lambdaT_sim = c(0.8, 0.6, 0.6, 0.25, 0.2, 0.1),
                        shape_sim = 1.5,
                        censored_time = 24,
                        cohort_stage1 = 10,        # Number of cohorts for Stage 1 (dose exploration via BOIN)
