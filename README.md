@@ -11,7 +11,7 @@ The goal of DEMOdesign is to ...
 You can install the development version of DEMOdesign like so:
 
 ``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+remotes::install_github("cyang728/DEMOdesign")
 ```
 
 ## Example
