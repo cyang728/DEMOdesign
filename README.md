@@ -1,5 +1,5 @@
 
-# DEMOdesign
+# DEMOdesign: Bayesian Adaptive Dose-Finding Using Biological and Clinical Outcomes
 
 <!-- badges: start -->
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -7,10 +7,19 @@
 [![JAGS Required](https://img.shields.io/badge/JAGS-Required-red)](http://mcmc-jags.sourceforge.net/)
 <!-- badges: end -->
 
-The **DEMOdesign** package implements the Dose Exploration, Monitoring, and Optimization (DEMO) design, a Bayesian adaptive phase I/II trial design that incorporates short-term biological, intermediate response, and long-term survival outcomes to optimize dose selection. The methodology is based on the paper:
+## Overview
+
+**DEMOdesign** implements the **Dose Exploration, Monitoring, and Optimization (DEMO) design**, a **Bayesian adaptive phase I/II trial design** that integrates:
+- **Early biological responses (YB)** as a biomarker for dose activity.
+- **Short-term toxicity (YT)** for safety monitoring.
+- **Intermediate response (YR)** for clinical efficacy assessment.
+- **Long-term survival (YS)** modeled via a **Weibull survival model**.
+
+The DEMO design optimally selects the dose that maximizes restricted mean survival time (RMST) while ensuring acceptable toxicity, sufficient biological activity, and clinical efficacy.
+
+This package is based on the paper:
 
 > Yang, C.-H., Thall, P. F., & Lin, R. (2024). **DEMO: Dose Exploration, Monitoring, and Optimization Using Biological and Clinical Outcomes**. *Annals of Applied Statistics*. (Under Review).
-
 
 ## Installation
 
