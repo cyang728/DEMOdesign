@@ -66,11 +66,6 @@
 #'
 #' @export
 
-
-MTD_identify_file     = system.file("bugs", "MTD_identify.bugs", package = "DEMOdesign")
-stage12_file          = system.file("bugs", "stage12.bugs", package = "DEMOdesign")
-survival_weibull_file = system.file("bugs", "survival_weibull.bugs", package = "DEMOdesign")
-
 DEMO_design = function(doses = c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85),
                        Y_B_sim = c(2.00, 2.01, 2.08, 2.76, 3.75, 4.73),
                        sigma2_B_sim = 1,
@@ -96,6 +91,10 @@ DEMO_design = function(doses = c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85),
                        K = 4,         # The number of additional acceptable doses to account for plateau scenarios
                        kappa = 0.30,  # The tolerance parameter controlling the inclusion of additional acceptable doses
                        seed = 1){
+
+  MTD_identify_file     = system.file("bugs", "MTD_identify.bugs", package = "DEMOdesign")
+  stage12_file          = system.file("bugs", "stage12.bugs", package = "DEMOdesign")
+  survival_weibull_file = system.file("bugs", "survival_weibull.bugs", package = "DEMOdesign")
 
   # Set random seed for reproducibility
   set.seed(seed)
