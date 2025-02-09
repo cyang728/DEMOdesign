@@ -25,45 +25,47 @@ This package is based on the paper:
 
 ### **1️⃣ Stage 1: Dose Exploration (Early Stopping for Safety & Activity)**
 
-📌 **Objective:** Identify **biologically active** and **non-toxic** doses.  
-📌 **Decision Rules:**
-- **Eliminate doses** that show **high toxicity**.
-- **Drop doses** with **insufficient biomarker activity (YB)**.
+**Objective:** Identify biologically active and non-toxic doses.  
 
-✔ **Interim Analyses in Stage 1:**  
-- **Midpoint Analysis**: Conducted **after 50% of cohorts are enrolled**.
-- **Final Exploration Analysis**: Determines safe and biologically active doses at the **end of dose escalation**.
+**Decision Rules:**
+- Eliminate doses that show high toxicity (YT).
+- Drop doses with insufficient biomarker activity (YB).
+
+**Interim Analyses in Stage 1:**  
+- Midpoint Analysis: Conducted after 50% of cohorts are enrolled.
+- Final Exploration Analysis: Determines safe and biologically active doses at the end of dose escalation.
 
 ---
 
 ### **2️⃣ Stage 2: Dose Monitoring (Randomized Screening for Clinical Efficacy)**
 
-📌 **Objective:** Among biologically active doses, **identify those with acceptable toxicity and sufficient clinical efficacy**.  
-📌 **Decision Rules:**
-- **Drop doses** with **insufficient biomarker activity (YB)**.
-- **Eliminate doses** that show **high toxicity (YT)**.
-- **Remove doses** that show **unacceptable clinical efficacy (YR)**.
+**Objective:** Among biologically active doses, identify those with acceptable toxicity and sufficient clinical efficacy.  
+**Decision Rules:**
+- Drop doses with insufficient biomarker activity (YB).
+- Eliminate doses that show high toxicity (YT).
+- Remove doses that show unacceptable clinical efficacy (YR).
 
 
-✔ **Interim Analyses in Stage 2:**  
-- **Multiple analyses** performed every **3-6 patients per dose**.
-- **Stopping rules:**  
-  - **Drop doses** with a **high probability of unacceptable toxicity**.
-  - **Stop randomization** to doses with **poor response rates**.
+**Interim Analyses in Stage 2:**  
+- Conducted every 3-6 patients per dose. 
+- Stopping rules:  
+  - Drop doses with a high probability of unacceptable toxicity.
+  - Stop randomization to doses with poor response rates.
 
 ---
 
 ### **3️⃣ Stage 3: Dose Optimization (Final Selection Using RMST)**
 
-📌 **Objective:** Among doses that pass Stage 2, identify the Optimal Therapeutic Dose (OTD) that maximizes long-term survival (YS) while maintaining acceptable toxicity and clinical efficacy. 
-📌 **Decision Rules:**  
-- **Prioritize doses** that **maximize restricted mean survival time (RMST)**.  
-- **Eliminate doses** with **unacceptable toxicity (YT)**.  
-- **Remove doses** that **fail to provide adequate survival benefit (YS)**.  
+**Objective:** Among doses that pass Stage 2, identify the Optimal Therapeutic Dose (OTD) that maximizes long-term survival (YS) while maintaining acceptable toxicity and clinical efficacy. 
 
-✔ **Interim Analyses in Stage 3:**  
-- **First survival analysis** conducted after **50% of patients are enrolled**.  
-- **Final selection** of the **OTD** at the **end of the study** based on **RMST-based Bayesian model selection**.  
+**Decision Rules:**  
+- Prioritize doses that maximize restricted mean survival time (RMST).  
+- Eliminate doses with unacceptable toxicity (YT).  
+- Remove doses that fail to provide adequate survival benefit (YS).  
+
+**Interim Analyses in Stage 3:**  
+- First survival analysis conducted after 50% of patients are enrolled.  
+- Final selection** of the OTD at the end of the study based on RMST-based Bayesian model selection.  
 
 ---
 
