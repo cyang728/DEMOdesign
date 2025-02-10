@@ -410,10 +410,6 @@ DEMO_design = function(doses = c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85),
                       lambdaT.true = lambdaT_sim,
                       shape.true = shape_sim,
                       time_C = censored_time)
-      #beta0.true=beta0.true, beta1.true=beta1.true, beta2.true=beta2.true,
-      #gamma0.true=gamma0.true, gamma1.true=gamma1.true,
-      #gamma2.true=gamma2.true, gamma3.true=gamma3.true,
-      #shape.true=shape.true, delta1.true=delta1.true, delta2.true=delta2.true)
 
       dat_tmp = cbind(d = rep(admissible_set[ind_tmp], num_expand[ind_tmp]),
                       data.frame(Y_out))
@@ -570,10 +566,6 @@ DEMO_design = function(doses = c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85),
                         lambdaT.true = lambdaT_sim,
                         shape.true = shape_sim,
                         time_C = censored_time)
-        #beta0.true=beta0.true, beta1.true=beta1.true, beta2.true=beta2.true,
-        #gamma0.true=gamma0.true, gamma1.true=gamma1.true,
-        #gamma2.true=gamma2.true, gamma3.true=gamma3.true,
-        #shape.true=shape.true, delta1.true=delta1.true, delta2.true=delta2.true)
 
         dat_tmp = cbind(d = rep(admissible_set[ind_tmp], num_expand[ind_tmp]),
                         data.frame(Y_out))
