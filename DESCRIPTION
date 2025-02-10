@@ -17,4 +17,5 @@ BugReports: https://github.com/cyang728/DEMOdesign/issues
 Imports: 
     BOIN,
     dplyr,
+    magrittr,
     R2jags
