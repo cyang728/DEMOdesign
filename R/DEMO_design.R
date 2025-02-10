@@ -96,6 +96,19 @@ DEMO_design = function(doses = c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85),
   stage12_file          = system.file("bugs", "stage12.bugs", package = "DEMOdesign")
   survival_weibull_file = system.file("bugs", "survival_weibull.bugs", package = "DEMOdesign")
 
+  # Check that all vectors have the same length
+  if (!(length(doses) == length(Y_B_sim) &&
+        length(Y_B_sim) == length(Y_T_sim) &&
+        length(Y_T_sim) == length(Y_R_sim) &&
+        length(Y_R_sim) == length(lambdaT_sim))) {
+    stop("Error: Length mismatch detected. Ensure that doses, Y_B_sim, Y_T_sim, Y_R_sim, and lambdaT_sim have the same length.")
+  }
+
+  # Check that sigma2_B_sim is non-negative
+  if (sigma2_B_sim < 0) {
+    stop("Error: sigma2_B_sim must be non-negative.")
+  }
+
   # Set random seed for reproducibility
   set.seed(seed)
 

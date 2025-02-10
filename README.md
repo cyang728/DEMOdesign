@@ -90,6 +90,7 @@ library(DEMOdesign)
 
 # Run DEMO_design with default parameters
 result <- DEMO_design(seed=1,
+                      doses = c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85),
                       Y_B_sim = c(2.00, 2.01, 2.08, 2.76, 3.75, 4.73), 
                       sigma2_B_sim = 1, 
                       Y_T_sim = c(0.01, 0.02, 0.03, 0.06, 0.13, 0.26), 
