@@ -2,5 +2,6 @@
 
 export(DEMO_design)
 importFrom(dplyr,group_by)
+importFrom(dplyr,n)
 importFrom(dplyr,summarise)
 importFrom(magrittr,"%>%")
