@@ -1,8 +1,8 @@
-outcome <- function(doses, dose.ind, coh.size, Y_B_mean.true, sigma2_B.true,
-                    Y_T_mean.true, Y_R_mean.true,
-                    delta1.true, delta2.true, delta3.true,
-                    lambdaT.true, shape.true,
-                    time_C = 24){
+outcome = function(doses, dose.ind, coh.size, Y_B_mean.true, sigma2_B.true,
+                   Y_T_mean.true, Y_R_mean.true,
+                   delta1.true, delta2.true, delta3.true,
+                   lambdaT.true, shape.true,
+                   time_C = 24){
 
   Y_B = rnorm(coh.size, Y_B_mean.true[dose.ind], sqrt(sigma2_B.true))
   Y_T = as.numeric(runif(coh.size)<Y_T_mean.true[dose.ind])
