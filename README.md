@@ -75,10 +75,10 @@ Implements a three-stage Bayesian adaptive design for Phase I/II oncology trials
 - `target_toxicity`: Numeric. Target short-term toxicity rate.  
 - `min_acceptable_ORR`: Numeric. Minimum acceptable overall response rate.  
 - `min_acceptable_PFS`: Numeric. Minimum acceptable RMST.  
-- `c_B`: Numeric. Cutoff for early biomarker activity.  
-- `c_T`: Numeric. Cutoff for short-term toxicity.  
-- `c_R`: Numeric. Cutoff for tumor response.  
-- `c_S`: Numeric. Cutoff for survival (RMST).  
+- `c_B`: Numeric. Decision cutoff for early biomarker activity.  
+- `c_T`: Numeric. Decision cutoff for short-term toxicity.  
+- `c_R`: Numeric. Decision cutoff for tumor response.  
+- `c_S`: Numeric. Decision cutoff for survival (RMST).  
 - `L1`: Integer. Number of best acceptable doses based on the posterior mean response rate.
 - `L2`: Integer. Number of additional acceptable doses to account for plateau scenarios where some doses have similar response rates.
 - `kappa`: Numeric. Plateau threshold for including additional acceptable doses for Stage 3.
