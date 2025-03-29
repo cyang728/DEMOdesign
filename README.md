@@ -141,7 +141,6 @@ Each row represents a patient with the following outcomes:
 - `Y_S`: Observed survival time 
 - `event`: Event indicator (1 = event, 0 = censored) 
 
----
 
 #### `$N1`, `$N2`, `$N3` 
 
@@ -159,7 +158,6 @@ $N3
 - `$N2`: Patients in the second stage 
 - `$N3`: Patients in the third stage
 
----
 
 #### `$OTD` 
 ``` $[1] 6 ```
