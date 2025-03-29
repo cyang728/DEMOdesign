@@ -1,5 +1,5 @@
 
-# **📊 DEMO Design: Three-Stage Bayesian Adaptive Dose-Finding**
+# **📊 DEMO Design: Dose Exploration, Monitoring, and Optimization using Biological and Clinical Outcomes**
 
 <!-- badges: start -->
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -9,73 +9,31 @@
 
 ## Overview
 
-**DEMOdesign** implements the **Dose Exploration, Monitoring, and Optimization (DEMO) design**, a **Bayesian adaptive phase I/II trial design** that integrates:
-- **Early biological responses (YB)** as a biomarker for dose activity.
-- **Short-term toxicity (YT)** for safety monitoring.
-- **Intermediate response (YR)** for clinical efficacy assessment.
-- **Long-term survival (YS)** modeled via a **Weibull survival model**.
+**DEMOdesign** is an R package implementing the **Dose Exploration, Monitoring, and Optimization (DEMO)** design—a Bayesian adaptive Phase I/II trial framework tailored for oncology dose-finding, particularly for immunotherapies and targeted therapies. It selects an **Optimal Therapeutic Dose (OTD)** that maximizes **Restricted Mean Survival Time (RMST)** while ensuring safety, biological activity, and clinical efficacy across three stages:
 
-The DEMO design optimally selects the dose that maximizes restricted mean survival time (RMST) while ensuring acceptable toxicity, sufficient biological activity, and clinical efficacy.
+1. **Exploration**: Identifies safe, biologically active doses using biomarkers ($Y_B$) and toxicity ($Y_T$).
+2. **Monitoring**: Refines doses based on response ($Y_R$) and additional safety data.
+3. **Optimization**: Selects the OTD using long-term survival ($Y_S$) via a Weibull model.
 
-This package is based on the paper:
+This package supports:
 
 > Yang, C.-H., Thall, P. F., & Lin, R. (2024). **DEMO: Dose Exploration, Monitoring, and Optimization Using Biological and Clinical Outcomes**. *Annals of Applied Statistics*. (Under Review).
 
 ---
 
-### **1️⃣ Stage 1: Dose Exploration**
+## Features
 
-**Objective:** Identify biologically active and non-toxic doses.  
-
-**Decision Rules:**
-- Eliminate doses that show high toxicity (YT).
-- Drop doses with insufficient biomarker activity (YB).
-
-**Interim Analyses in Stage 1:**  
-- Midpoint Analysis: Conducted after 50% of cohorts are enrolled.
-- Final Exploration Analysis: Determines safe and biologically active doses at the end of dose escalation.
+- **Three-Stage Bayesian Design**:
+  - **Stage 1**: BOIN-based exploration with biomarker and toxicity screening.
+  - **Stage 2**: Monitors admissible doses for efficacy and safety.
+  - **Stage 3**: Optimizes dose selection with RMST.
+- **Endpoints**: Integrates `Y_B` (biomarker), `Y_T` (toxicity), `Y_R` (response), `Y_S` (survival).
 
 ---
-
-### **2️⃣ Stage 2: Dose Monitoring**
-
-**Objective:** Among biologically active doses, identify those with acceptable toxicity and sufficient clinical efficacy.  
-**Decision Rules:**
-- Drop doses with insufficient biomarker activity (YB).
-- Eliminate doses that show high toxicity (YT).
-- Remove doses that show unacceptable clinical efficacy (YR).
-
-
-**Interim Analyses in Stage 2:**  
-- Conducted every 3-6 patients per dose. 
-- Stopping rules:  
-  - Drop doses with a high probability of unacceptable toxicity.
-  - Stop randomization to doses with poor response rates.
-
----
-
-### **3️⃣ Stage 3: Dose Optimization**
-
-**Objective:** Among doses that pass Stage 2, identify the Optimal Therapeutic Dose (OTD) that maximizes long-term survival (YS) while maintaining acceptable toxicity and clinical efficacy. 
-
-**Decision Rules:**  
-- Prioritize doses that maximize restricted mean survival time (RMST).  
-- Eliminate doses with unacceptable toxicity (YT).  
-- Delete doses that show unacceptable clinical efficacy (YR).
-- Remove doses that fail to provide adequate survival benefit (YS).  
-
-**Interim Analyses in Stage 3:**  
-- First survival analysis conducted after 50% of patients are enrolled.  
-- Final selection of the Optimal Therapeutic Dose (OTD) is identified at the end of the study, identifying the dose that maximizes restricted mean survival time (RMST) while maintaining acceptable toxicity, sufficient biological activity, and clinical efficacy.
-
----
-
-This **three-stage Bayesian adaptive framework** ensures that **safe, biologically active, and clinically effective doses** are selected while optimizing **patient survival outcomes**.
-
 
 ## Installation
 
-You can install the development version of DEMOdesign like so:
+Install from GitHub:
 
 ``` r
 remotes::install_github("cyang728/DEMOdesign")
@@ -88,25 +46,48 @@ The following example demonstrates how to use DEMOdesign to simulate a Bayesian 
 ``` r
 library(DEMOdesign)
 
-# Run DEMO_design with default parameters
+# Run DEMO_design with example data
 result <- DEMO_design(seed=1,
                       doses = c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85),
-                      Y_B_sim = c(2.00, 2.01, 2.08, 2.76, 3.75, 4.73), 
+                      Y_B_sim = c(2.00, 2.01, 2.08, 2.76, 3.75, 4.73),  # biomarker means
                       sigma2_B_sim = 1, 
-                      Y_T_sim = c(0.01, 0.02, 0.03, 0.06, 0.13, 0.26), 
-                      Y_R_sim = c(0.04, 0.05, 0.08, 0.20, 0.35, 0.47),
-                      lambdaT_sim = c(0.8, 0.6, 0.6, 0.25, 0.2, 0.1),
-                      shape_sim = 1.5,
-                      delta1_sim = 3, delta2_sim = -2,
-                      censored_time = 24)
+                      Y_T_sim = c(0.01, 0.02, 0.03, 0.06, 0.13, 0.26),  # toxicity rates
+                      Y_R_sim = c(0.04, 0.05, 0.08, 0.20, 0.35, 0.47),  # response rates
+                      lambdaT_sim = c(0.8, 0.6, 0.6, 0.25, 0.2, 0.1),   # scale for Weibull survival
+                      shape_sim = 1.5,      # Weibull shape parameter
+                      delta1_sim = 3,       # effect of toxicity on survival
+                      delta2_sim = -2,      # effect of response on survival
+                      censored_time = 24    # administrative censoring time 
+                      )
 
-# Print the optimal therapeutic dose (OTD)
+# View the optimal therapeutic dose (OTD)
 print(result$OTD)
 
-# View trial summary
+# View summary of patient-level trial data
 head(result$trial)
 ```
 
+## Function Documentation
 
+#### Inputs
 
+- `seed`: Integer. Random seed for reproducibility.
+- `doses`: Numeric vector. Dose levels to evaluate.
+- `Y_B_sim`: Numeric vector. Mean biomarker values for each dose.
+- `sigma2_B_sim`: Numeric. Variance of the biomarker outcome.
+- `Y_T_sim`: Numeric vector. Toxicity probabilities for each dose.
+- `Y_R_sim`: Numeric vector. Response probabilities for each dose.
+- `lambdaT_sim`: Numeric vector. Weibull scale parameters for survival at each dose.
+- `shape_sim`: Numeric. Weibull shape parameter.
+- `delta1_sim`: Numeric. Effect of toxicity on survival time.
+- `delta2_sim`: Numeric. Effect of response on survival time.
+- `censored_time`: Numeric. Administrative censoring time (e.g., 24 months).
+
+#### Returns
+
+A list with the following elements:
+
+- `OTD`: The selected Optimal Therapeutic Dose.
+- `trial`: A data frame with patient-level trial data, including assigned dose, biomarker, toxicity, response, and survival outcomes.
+- `summary`: (Optional) Summary statistics across the trial (if implemented).
 
