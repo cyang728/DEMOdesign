@@ -75,6 +75,7 @@ DEMO_design = function(doses = c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85),
                        lambdaT_sim = c(0.8, 0.6, 0.6, 0.25, 0.2, 0.1),
                        shape_sim = 1.5,
                        censored_time = 24,
+                       RMST_followup = 12,
                        cohort_stage1 = 10,        # Number of cohorts for Stage 1 (dose exploration via BOIN)
                        cohortsize_stage1 = 3,
                        cohort_stage2 = 3,         # Number of additional cohorts for Stage 2 (dose monitoring)
@@ -507,7 +508,7 @@ DEMO_design = function(doses = c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85),
     n_tmp = NCOL(jags_obj$BUGSoutput$sims.matrix) - 5
     for(j in 1:n_tmp){
       post_lambdaT = jags_obj$BUGSoutput$sims.matrix[,5+j]
-      RMST_ind = RMST_BUGS(n_gen=10, dose=doses[j], t_S = 12.0,
+      RMST_ind = RMST_BUGS(n_gen=10, dose=doses[j], t_S = RMST_followup,
                            alpha0=post_alpha0, alpha1=post_alpha1,
                            alpha2=post_alpha2, alpha3=post_alpha3, tau=post_tau,
                            beta0=post_beta0, beta1=post_beta1, beta2=post_beta2,
@@ -662,7 +663,7 @@ DEMO_design = function(doses = c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85),
       n_tmp = NCOL(jags_obj$BUGSoutput$sims.matrix) - 5
       for(j in 1:n_tmp){
         post_lambdaT = jags_obj$BUGSoutput$sims.matrix[,5+j]
-        RMST_ind = RMST_BUGS(n_gen=10, dose=doses[j],
+        RMST_ind = RMST_BUGS(n_gen=10, dose=doses[j], t_S = RMST_followup,
                              alpha0=post_alpha0, alpha1=post_alpha1,
                              alpha2=post_alpha2, alpha3=post_alpha3, tau=post_tau,
                              beta0=post_beta0, beta1=post_beta1, beta2=post_beta2,
