@@ -7,7 +7,7 @@ model {
     logit(Pr.Tox[j]) <- beta0 + exp(beta1) * d[j] + exp(beta2) * YB[j]
     NTox[j] ~ dbin(Pr.Tox[j], 1)
 
-    logit(Pr.Eff[j]) <- gamma0 + exp(gamma1) * d[j] + gamma2 * (d[j]^2) + exp(gamma3) * YB[j]
+    logit(Pr.Eff[j]) <- gamma0 + gamma1 * d[j] + gamma2 * (d[j] * d[j]) + gamma3 * YB[j]
     NEff[j] ~ dbin(Pr.Eff[j], 1)
   }
 

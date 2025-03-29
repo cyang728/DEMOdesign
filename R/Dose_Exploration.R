@@ -33,6 +33,7 @@ BOIN_sim = function(Y_B.true=Y_B_mean.true, sigma2_B.true=sigma2_B,
                     ncohort=10, cohortsize=3, startdose=1, n.earlystop=cohortsize*ncohort,
                     p.saf=0.6*target, p.tox=1.4*target, cutoff.eli=0.95, extrasafe=FALSE,
                     titration=F, offset=0.05, seed=1,
+                    max_per_dose = 9,
                     monitor_cutoff_B = 0.30){
   set.seed(seed)
   ndose = length(Y_B.true)
@@ -91,10 +92,6 @@ BOIN_sim = function(Y_B.true=Y_B_mean.true, sigma2_B.true=sigma2_B,
                       lambdaT.true=lambdaT.true,
                       time_C = time_C,
                       shape.true=shape.true)
-      #beta0.true=beta0.true, beta1.true=beta1.true, beta2.true=beta2.true,
-      #gamma0.true=gamma0.true, gamma1.true=gamma1.true,
-      #gamma2.true=gamma2.true, gamma3.true=gamma3.true,
-      #shape.true=shape.true, delta1.true=delta1.true, delta2.true=delta2.true)
 
       newcohort = Y_out$Y_T;
       y_T_tol = c(y_T_tol, newcohort)
@@ -144,7 +141,7 @@ BOIN_sim = function(Y_B.true=Y_B_mean.true, sigma2_B.true=sigma2_B,
       if(no_eff > 0) elimi[1:no_eff] = 1
     }
 
-    if(n[d] >= 9) elimi[d:ndose] = 1
+    if(n[d] >= max_per_dose) elimi[d:ndose] = 1
 
     if(n[d]>=n.earlystop && ((y_T[d]>b.e[n[d]] && y_T[d]<b.d[n[d]])||
                              (d==1 && y_T[d]>=b.d[n[d]]) ||
@@ -168,7 +165,7 @@ BOIN_sim = function(Y_B.true=Y_B_mean.true, sigma2_B.true=sigma2_B,
 }
 
 pi_R_mean = function(gamma0, gamma1, gamma2, gamma3, dosage, YB){
-  eta = gamma0 + exp(gamma1)*dosage + gamma2*dosage^2 + exp(gamma3)*YB
+  eta = gamma0 + gamma1*dosage + gamma2*dosage^2 + gamma3*YB
   pi_ORR = exp(eta)/(1+exp(eta))
   return(pi_ORR)
 }

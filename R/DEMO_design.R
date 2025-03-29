@@ -27,7 +27,7 @@
 #' @param min_acceptable_ORR A numeric scalar specifying the minimum acceptable ORR (overall response). \strong{Default:} \code{0.20}
 #' @param min_acceptable_PFS A numeric scalar for minimum acceptable restricted mean survival time (RMST). \strong{Default:} \code{3.0}
 #' @param c_B,c_T,c_R,c_S Numeric cutoffs for early biomarker monitoring (\code{c_B}), toxicity (\code{c_T}), ORR (\code{c_R}), and survival (\code{c_S}). \strong{Defaults:} \code{0.30, 0.60, 0.80, 0.90}
-#' @param L,K Integers controlling dose selection in Stage 2. \strong{Defaults:} \code{3} and \code{4}
+#' @param L1,L2 Integers controlling dose selection in Stage 2. \strong{Defaults:} \code{3} and \code{4}
 #' @param kappa A numeric scalar for the \dQuote{efficacy plateau} threshold. \strong{Default:} \code{0.30}
 #' @param seed An integer for the random seed. \strong{Default:} \code{1}
 #'
@@ -87,8 +87,8 @@ DEMO_design = function(doses = c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85),
                        c_T = 0.60,    # Cutoff for toxicity monitoring
                        c_R = 0.80,    # Cutoff for overall response rate (ORR) monitoring
                        c_S = 0.90,    # Cutoff for survival monitoring
-                       L = 3,         # The number of best acceptable doses based on the posterior mean ORR
-                       K = 4,         # The number of additional acceptable doses to account for plateau scenarios
+                       L1 = 3,         # The number of best acceptable doses based on the posterior mean ORR
+                       L2 = 4,         # The number of additional acceptable doses to account for plateau scenarios
                        kappa = 0.30,  # The tolerance parameter controlling the inclusion of additional acceptable doses
                        seed = 1){
 
@@ -345,7 +345,7 @@ DEMO_design = function(doses = c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85),
 
   # If any dose has unacceptable toxicity, eliminate doses from that dose upward
   if(length(elmi_monitor_T)!=0){
-    elmi_monitor_T = max(elmi_monitor_T)
+    elmi_monitor_T = min(elmi_monitor_T)
     admissible_set = admissible_set[!admissible_set %in% (elmi_monitor_T:n.dose)]
   }
 
@@ -354,10 +354,10 @@ DEMO_design = function(doses = c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85),
     admissible_set = admissible_set[!admissible_set %in% elmi_monitor_R]
   }
 
-  # If still more than L doses remain, keep only top L by ORR
-  if(length(admissible_set) > L){
+  # If still more than L1 doses remain, keep only top L by ORR
+  if(length(admissible_set) > L1){
     len_adm = length(admissible_set)
-    original_set = admissible_set[which(len_adm - rank(post_R[admissible_set]) < L)]
+    original_set = admissible_set[which(len_adm - rank(post_R[admissible_set]) < L1)]
   }else{
     original_set = admissible_set
   }
@@ -367,9 +367,9 @@ DEMO_design = function(doses = c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85),
   max_pR = max(1-p_R_monitor)
   plateau_set = which((1-p_R_monitor) > max_pR*(1-kappa))
   plateau_set = plateau_set[plateau_set %in% admissible_set]
-  if(length(plateau_set) > K){
+  if(length(plateau_set) > L2){
     len_adm = length(plateau_set)
-    plateau_set = plateau_set[which(len_adm - rank(post_R[plateau_set]) < K)]
+    plateau_set = plateau_set[which(len_adm - rank(post_R[plateau_set]) < L2)]
   }
 
   # Combine both sets W = C1 \cup C2
