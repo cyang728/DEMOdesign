@@ -20,6 +20,7 @@
 #' @param lambdaT_sim A numeric vector of baseline hazard parameters at each dose for survival modeling. \strong{Default:} \code{c(0.4, 0.1, 0.1, 0.3, 0.3, 0.3)}
 #' @param shape_sim A numeric scalar for the Weibull shape parameter. \strong{Default:} \code{1.5}
 #' @param censored_time A numeric scalar specifying the censoring time (in months, for example). \strong{Default:} \code{24}
+#' @param RMST_followup A numeric scalar specifying the area under the survival curve up to a specific time point. \strong{Default:} \code{12}
 #' @param cohort_stage1,cohort_stage2 Integers giving the number of cohorts in Stage 1 (BOIN) and Stage 2 (dose monitoring). \strong{Defaults:} \code{10} and \code{3}
 #' @param cohortsize_stage1,cohortsize_stage2 Integers for patients per cohort in Stage 1 and Stage 2. \strong{Defaults:} \code{3} and \code{3}
 #' @param M An integer for Stage 3 sample size expansions (per remaining dose). \strong{Default:} \code{24}
