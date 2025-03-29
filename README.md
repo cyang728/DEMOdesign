@@ -64,7 +64,24 @@ Implements a three-stage Bayesian adaptive design for Phase I/II oncology trials
 - `shape_sim`: Numeric. Weibull shape parameter.
 - `delta1_sim`: Numeric. Effect of toxicity on survival time.
 - `delta2_sim`: Numeric. Effect of response on survival time.
+- `delta2_sim`: Numeric. Effect of biomarker on survival time.
 - `censored_time`: Numeric. Administrative censoring time (e.g., 24 months).
+- `RMST_followup`: Numeric. Time horizon for RMST calculation (e.g., 12 months).  
+- `cohort_stage1`: Integer. Number of cohorts in Stage 1 (Exploration).  
+- `cohort_stage2`: Integer. Number of cohorts in Stage 2 (Monitoring).  
+- `cohortsize_stage1`: Integer. Number of patients per cohort in Stage 1.  
+- `cohortsize_stage2`: Integer. Number of patients per cohort in Stage 2.  
+- `M`: Integer. Maximum number of patients at each dose across the three-stage trial.
+- `target_toxicity`: Numeric. Target short-term toxicity rate.  
+- `min_acceptable_ORR`: Numeric. Minimum acceptable overall response rate.  
+- `min_acceptable_PFS`: Numeric. Minimum acceptable RMST.  
+- `c_B`: Numeric. Cutoff for early biomarker activity.  
+- `c_T`: Numeric. Cutoff for short-term toxicity.  
+- `c_R`: Numeric. Cutoff for tumor response.  
+- `c_S`: Numeric. Cutoff for survival (RMST).  
+- `L1`: Integer. Number of best acceptable doses based on the posterior mean response rate.
+- `L2`: Integer. Number of additional acceptable doses to account for plateau scenarios where some doses have similar response rates.
+- `kappa`: Numeric. Plateau threshold for including additional acceptable doses for Stage 3.
 
 #### Returns
 

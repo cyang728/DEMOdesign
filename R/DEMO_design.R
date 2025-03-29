@@ -23,7 +23,7 @@
 #' @param RMST_followup A numeric scalar specifying the area under the survival curve up to a specific time point. \strong{Default:} \code{12}
 #' @param cohort_stage1,cohort_stage2 Integers giving the number of cohorts in Stage 1 (BOIN) and Stage 2 (dose monitoring). \strong{Defaults:} \code{10} and \code{3}
 #' @param cohortsize_stage1,cohortsize_stage2 Integers for patients per cohort in Stage 1 and Stage 2. \strong{Defaults:} \code{3} and \code{3}
-#' @param M An integer for Stage 3 sample size expansions (per remaining dose). \strong{Default:} \code{24}
+#' @param M An integer for maximum number of patients at each dose across the three-stage trial. \strong{Default:} \code{24}
 #' @param target_toxicity A numeric scalar specifying the target toxicity rate. \strong{Default:} \code{0.30}
 #' @param min_acceptable_ORR A numeric scalar specifying the minimum acceptable ORR (overall response). \strong{Default:} \code{0.20}
 #' @param min_acceptable_PFS A numeric scalar for minimum acceptable restricted mean survival time (RMST). \strong{Default:} \code{3.0}
