@@ -11,9 +11,9 @@
 
 **DEMOdesign** is an R package implementing the **Dose Exploration, Monitoring, and Optimization (DEMO)** design—a Bayesian adaptive Phase I/II trial framework tailored for oncology dose-finding, particularly for immunotherapies and targeted therapies. It selects an **Optimal Therapeutic Dose (OTD)** that maximizes **Restricted Mean Survival Time (RMST)** while ensuring safety, biological activity, and clinical efficacy across three stages:
 
-1. **Exploration**: Identifies safe, biologically active doses using biomarkers ($Y_B$) and toxicity ($Y_T$).
-2. **Monitoring**: Refines doses based on response ($Y_R$) and additional safety data.
-3. **Optimization**: Selects the OTD using long-term survival ($Y_S$) via a Weibull model.
+1. **Sequential Exploration**: Identifies safe, biologically active doses using biomarkers ($Y_B$) and toxicity ($Y_T$).
+2. **Randomization and Monitoring**: Refines doses based on response ($Y_R$) and additional safety data.
+3. **Randomized Optimization**: Selects the OTD using long-term survival ($Y_S$) via a Weibull model.
 
 This package supports:
 
