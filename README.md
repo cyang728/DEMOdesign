@@ -35,7 +35,7 @@ This package supports:
 
 ---
 
-## Installation
+## 📦 Installation
 
 Install from GitHub:
 
@@ -74,7 +74,7 @@ head(result$trial)
 
 ## Function Documentation
 
-### DEMO_design()
+### `DEMO_design()`
 
 #### Description
 Implements a three-stage Bayesian adaptive design for Phase I/II oncology trials. It integrates biomarker ($Y_B$), toxicity ($Y_T$), response ($Y_R$), and survival ($Y_S$) outcomes to identify an Optimal Therapeutic Dose (OTD) that balances safety, efficacy, and long-term survival.
@@ -100,7 +100,7 @@ A list with the following elements:
 - `OTD`: The selected Optimal Therapeutic Dose.
 - `trial`: A data frame with patient-level trial data, including assigned dose, biomarker, toxicity, response, and survival outcomes.
 
-### tau_ms()
+### `tau_ms()`
 
 #### Description
 Estimates the lowest dose (\eqn{\tau_B}) at which biological activity (\eqn{Y_B}) increases significantly in a Phase I trial dataset. Uses a Bayesian model selection approach to compute posterior probabilities of step changes in \eqn{Y_B} across dose levels, returning the dose index where the step occurs or 1 if no significant step is detected based on a cutoff.
