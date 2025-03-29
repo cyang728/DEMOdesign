@@ -115,7 +115,7 @@ print(result$OTD)
 head(result$trial)
 ```
 
-### 📊 Example Output
+### Example Output
 
 #### `$trial` (first 10 rows)
 
@@ -136,9 +136,9 @@ head(result$trial)
 Each row represents a patient with the following outcomes: 
 - `d`: Assigned dose 
 - `Y_B`: Biomarker outcome 
-- `y`: Toxicity 
+- `y`: Toxicity outcome
 - `Y_R`: Tumor response 
-- `Y_S`: Survival time 
+- `Y_S`: Observed survival time 
 - `event`: Event indicator (1 = event, 0 = censored) 
 
 ---
@@ -155,11 +155,11 @@ $N2
 $N3 
 [1] 0 0 0 0 12 6 
 ``` 
-- `$N1`: Patients in the Exploration stage 
-- `$N2`: Patients in the Monitoring stage 
-- `$N3`: Patients in the Optimization stage Each vector corresponds to patient counts per dose level.
+- `$N1`: Patients in the first stage 
+- `$N2`: Patients in the second stage 
+- `$N3`: Patients in the third stage
 
 ---
 
-#### 🎯 `$OTD` 
+#### `$OTD` 
 ``` $[1] 6 ```
