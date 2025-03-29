@@ -57,7 +57,7 @@ result <- DEMO_design(seed = 1,
                       shape_sim = 1.5,      # Weibull shape parameter
                       delta1_sim = 3,       # effect of toxicity on survival
                       delta2_sim = -2,      # effect of response on survival
-                      delta2_sim = 0,       # effect of biomarker on survival
+                      delta3_sim = 0,       # effect of biomarker on survival
                       censored_time = 24    # administrative censoring time 
                       )
 
