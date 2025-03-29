@@ -27,7 +27,11 @@ This package supports:
   - **Stage 1**: BOIN-based exploration with biomarker and toxicity screening.
   - **Stage 2**: Monitors admissible doses for efficacy and safety.
   - **Stage 3**: Optimizes dose selection with RMST.
-- **Endpoints**: Integrates $Y_B$ (biomarker), $Y_T$ (toxicity), $Y_R$ (response), $Y_S$ (survival).
+- **Endpoints**: Integrates 
+  - $Y_B$ (biomarker), 
+  - $Y_T$ (toxicity), 
+  - $Y_R$ (response), 
+  - $Y_S$ (survival).
 
 ---
 
@@ -70,6 +74,11 @@ head(result$trial)
 
 ## Function Documentation
 
+### DEMO_design()
+
+#### Description
+Implements a three-stage Bayesian adaptive design for Phase I/II oncology trials. It integrates biomarker ($Y_B$), toxicity ($Y_T$), response ($Y_R$), and survival ($Y_S$) outcomes to identify an Optimal Therapeutic Dose (OTD) that balances safety, efficacy, and long-term survival.
+
 #### Inputs
 
 - `seed`: Integer. Random seed for reproducibility.
@@ -90,3 +99,14 @@ A list with the following elements:
 
 - `OTD`: The selected Optimal Therapeutic Dose.
 - `trial`: A data frame with patient-level trial data, including assigned dose, biomarker, toxicity, response, and survival outcomes.
+
+### tau_ms()
+
+#### Description
+Estimates the lowest dose (\eqn{\tau_B}) at which biological activity (\eqn{Y_B}) increases significantly in a Phase I trial dataset. Uses a Bayesian model selection approach to compute posterior probabilities of step changes in \eqn{Y_B} across dose levels, returning the dose index where the step occurs or 1 if no significant step is detected based on a cutoff.
+
+#### Inputs
+- `dat`: Data frame. Phase I trial data with columns:
+  - `d`: Numeric. Dose levels.
+  - `Y_B`: Numeric. Biomarker outcomes.
+- `monitor_cutoff_B`: Numeric. Threshold (e.g., 0.3) for the maximum posterior probability to declare a dose biologically active; if exceeded, returns the dose index, otherwise returns 1.
