@@ -114,3 +114,52 @@ print(result$OTD)
 # View summary of patient-level trial data
 head(result$trial)
 ```
+
+### 📊 Example Output
+
+#### `$trial` (first 10 rows)
+
+```txt
+   d      Y_B y Y_R        Y_S      event
+1  1 1.373546 0   0  0.6038467     1
+2  1 2.183643 0   0  1.1267659     1
+3  1 1.164371 0   0  0.4746055     1
+4  2 2.004233 0   0  1.3692341     1
+5  2 4.414653 0   0  0.3783198     1
+6  2 2.773593 0   1  5.6059113     1
+7  3 2.035066 0   0  0.5499609     1
+8  3 2.063810 0   0  0.9914613     1
+9  3 3.023836 0   0  1.0389645     1
+10 4 3.564190 0   1  7.2212764     1
+```
+
+Each row represents a patient with the following outcomes: 
+- `d`: Assigned dose 
+- `Y_B`: Biomarker outcome 
+- `y`: Toxicity 
+- `Y_R`: Tumor response 
+- `Y_S`: Survival time 
+- `event`: Event indicator (1 = event, 0 = censored) 
+
+---
+
+#### `$N1`, `$N2`, `$N3` 
+
+``` 
+$N1 
+[1] 3 3 3 3 6 9 
+
+$N2 
+[1] 0 0 0 0 6 9 
+
+$N3 
+[1] 0 0 0 0 12 6 
+``` 
+- `$N1`: Patients in the Exploration stage 
+- `$N2`: Patients in the Monitoring stage 
+- `$N3`: Patients in the Optimization stage Each vector corresponds to patient counts per dose level.
+
+---
+
+#### 🎯 `$OTD` 
+``` $[1] 6 ```
