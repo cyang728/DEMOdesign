@@ -43,36 +43,9 @@ Install from GitHub:
 remotes::install_github("cyang728/DEMOdesign")
 ```
 
-## 🚀 Example
+---
 
-The following example demonstrates how to use DEMOdesign to simulate a Bayesian adaptive dose-finding trial.
-
-``` r
-library(DEMOdesign)
-
-# Run DEMO_design with example data
-result <- DEMO_design(seed = 1,
-                      doses = c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85),
-                      Y_B_sim = c(2.00, 2.01, 2.08, 2.76, 3.75, 4.73),  # biomarker means
-                      sigma2_B_sim = 1, 
-                      Y_T_sim = c(0.01, 0.02, 0.03, 0.06, 0.13, 0.26),  # toxicity rates
-                      Y_R_sim = c(0.04, 0.05, 0.08, 0.20, 0.35, 0.47),  # response rates
-                      lambdaT_sim = c(0.8, 0.6, 0.6, 0.25, 0.2, 0.1),   # scale for Weibull survival
-                      shape_sim = 1.5,      # Weibull shape parameter
-                      delta1_sim = 3,       # effect of toxicity on survival
-                      delta2_sim = -2,      # effect of response on survival
-                      delta3_sim = 0,       # effect of biomarker on survival
-                      censored_time = 24    # administrative censoring time 
-                      )
-
-# View the optimal therapeutic dose (OTD)
-print(result$OTD)
-
-# View summary of patient-level trial data
-head(result$trial)
-```
-
-## Function Documentation
+## Functions
 
 ### `DEMO_design()`
 
@@ -110,3 +83,34 @@ Estimates the lowest dose (\eqn{\tau_B}) at which biological activity (\eqn{Y_B}
   - `d`: Numeric. Dose levels.
   - `Y_B`: Numeric. Biomarker outcomes.
 - `monitor_cutoff_B`: Numeric. Threshold (e.g., 0.3) for the maximum posterior probability to declare a dose biologically active; if exceeded, returns the dose index, otherwise returns 1.
+
+---
+
+## 🚀 Example
+
+The following example demonstrates how to use DEMOdesign to simulate a Bayesian adaptive dose-finding trial.
+
+``` r
+library(DEMOdesign)
+
+# Run DEMO_design with example data
+result <- DEMO_design(seed = 1,
+                      doses = c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85),
+                      Y_B_sim = c(2.00, 2.01, 2.08, 2.76, 3.75, 4.73),  # biomarker means
+                      sigma2_B_sim = 1, 
+                      Y_T_sim = c(0.01, 0.02, 0.03, 0.06, 0.13, 0.26),  # toxicity rates
+                      Y_R_sim = c(0.04, 0.05, 0.08, 0.20, 0.35, 0.47),  # response rates
+                      lambdaT_sim = c(0.8, 0.6, 0.6, 0.25, 0.2, 0.1),   # scale for Weibull survival
+                      shape_sim = 1.5,      # Weibull shape parameter
+                      delta1_sim = 3,       # effect of toxicity on survival
+                      delta2_sim = -2,      # effect of response on survival
+                      delta3_sim = 0,       # effect of biomarker on survival
+                      censored_time = 24    # administrative censoring time 
+                      )
+
+# View the optimal therapeutic dose (OTD)
+print(result$OTD)
+
+# View summary of patient-level trial data
+head(result$trial)
+```
