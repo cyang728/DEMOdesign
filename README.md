@@ -1,5 +1,5 @@
 
-# **📊 DEMO Design: Dose Exploration, Monitoring, and Optimization using Biological and Clinical Outcomes**
+# **💊 DEMO Design: Dose Exploration, Monitoring, and Optimization using Biological and Clinical Outcomes**
 
 <!-- badges: start -->
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -43,7 +43,7 @@ Install from GitHub:
 remotes::install_github("cyang728/DEMOdesign")
 ```
 
-## Example
+## 🚀 Example
 
 The following example demonstrates how to use DEMOdesign to simulate a Bayesian adaptive dose-finding trial.
 
