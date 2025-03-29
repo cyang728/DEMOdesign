@@ -47,7 +47,7 @@ The following example demonstrates how to use DEMOdesign to simulate a Bayesian 
 library(DEMOdesign)
 
 # Run DEMO_design with example data
-result <- DEMO_design(seed=1,
+result <- DEMO_design(seed = 1,
                       doses = c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85),
                       Y_B_sim = c(2.00, 2.01, 2.08, 2.76, 3.75, 4.73),  # biomarker means
                       sigma2_B_sim = 1, 
@@ -57,6 +57,7 @@ result <- DEMO_design(seed=1,
                       shape_sim = 1.5,      # Weibull shape parameter
                       delta1_sim = 3,       # effect of toxicity on survival
                       delta2_sim = -2,      # effect of response on survival
+                      delta2_sim = 0,       # effect of biomarker on survival
                       censored_time = 24    # administrative censoring time 
                       )
 
