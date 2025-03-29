@@ -89,5 +89,3 @@ A list with the following elements:
 
 - `OTD`: The selected Optimal Therapeutic Dose.
 - `trial`: A data frame with patient-level trial data, including assigned dose, biomarker, toxicity, response, and survival outcomes.
-- `summary`: (Optional) Summary statistics across the trial (if implemented).
-
