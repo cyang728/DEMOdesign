@@ -1,19 +1,15 @@
 outcome <- function(doses, dose.ind, coh.size, Y_B_mean.true, sigma2_B.true,
                     Y_T_mean.true, Y_R_mean.true,
-                    #beta0.true, beta1.true, beta2.true,
-                    #gamma0.true, gamma1.true, gamma2.true, gamma3.true,
-                    delta1.true, delta2.true, lambdaT.true, shape.true,
+                    delta1.true, delta2.true, delta3.true,
+                    lambdaT.true, shape.true,
                     time_C = 24){
 
   Y_B = rnorm(coh.size, Y_B_mean.true[dose.ind], sqrt(sigma2_B.true))
-
-  #prob_R = prob_R; prob_T = prob_T
   Y_T = as.numeric(runif(coh.size)<Y_T_mean.true[dose.ind])
   Y_R = as.numeric(runif(coh.size)<Y_R_mean.true[dose.ind])
 
-  time_T = rweibull(coh.size, shape=shape.true, scale=(lambdaT.true[dose.ind]*exp(delta1.true*Y_T+delta2.true*Y_R))^(-1/shape.true) )
+  time_T = rweibull(coh.size, shape=shape.true, scale=(lambdaT.true[dose.ind]*exp(delta1.true*Y_T+delta2.true*Y_R+delta3.true*Y_B))^(-1/shape.true) )
   time_T = time_T
-  #time_C = 24 #runif(coh.size, 0, 36)
   Y_S = pmin(time_T, time_C)
   event = as.numeric(time_T <= time_C)
 
@@ -26,6 +22,7 @@ BOIN_sim = function(Y_B.true=Y_B_mean.true, sigma2_B.true=sigma2_B,
                     Y_R.true=Y_R,
                     delta1.true=delta1,
                     delta2.true=delta2,
+                    delta3.true=delta3,
                     lambdaT.true=lambdaT,
                     shape.true=shape,
                     time_C = time_C,
@@ -38,7 +35,6 @@ BOIN_sim = function(Y_B.true=Y_B_mean.true, sigma2_B.true=sigma2_B,
   set.seed(seed)
   ndose = length(Y_B.true)
   npts = ncohort*cohortsize
-  #cohortsize = npts/ncohort #npts = ncohort * cohortsize # = np
 
   if (cohortsize > 1) {
     temp = BOIN::get.boundary(target_tox, ncohort, cohortsize, n.earlystop=cohortsize*ncohort,
@@ -60,7 +56,7 @@ BOIN_sim = function(Y_B.true=Y_B_mean.true, sigma2_B.true=sigma2_B,
   earlystop = 0
   d = startdose
   elimi = rep(0, ndose)
-  ft=TRUE #flag used to determine whether or not to add cohortsize-1 patients to a dose for the first time when titration is triggered.
+  ft = TRUE #flag used to determine whether or not to add cohortsize-1 patients to a dose for the first time when titration is triggered.
   if (titration){
     z = (runif(ndose) < p.true)
     if (sum(z) == 0) {
@@ -89,6 +85,7 @@ BOIN_sim = function(Y_B.true=Y_B_mean.true, sigma2_B.true=sigma2_B,
                       Y_R_mean.true=Y_R.true,
                       delta1.true=delta1.true,
                       delta2.true=delta2.true,
+                      delta3.true=delta3.true,
                       lambdaT.true=lambdaT.true,
                       time_C = time_C,
                       shape.true=shape.true)
@@ -207,10 +204,10 @@ post_YB_function = function(dat_alpha=post_alpha, d=1){
   mean(post_YB)
 }
 
-RMST_TRUE = function(lambda, alpha, delta1, delta2, YT, YE, t_S=12){
+RMST_TRUE = function(lambda, alpha, delta1, delta2, delta3, YB, YT, YR, t_S=12){
 
   surv_fn = function(t){
-    lambdaT = lambda*exp(delta1*YT + delta2*YE)
+    lambdaT = lambda*exp(delta1*YT + delta2*YR + delta3*YB)
     cum_hazard = lambdaT*t^(alpha)
     return(exp(-cum_hazard))
   }

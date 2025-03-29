@@ -16,7 +16,7 @@
 #' @param sigma2_B_sim A numeric scalar for the true variance of the biomarker. \strong{Default:} \code{1}
 #' @param Y_T_sim A numeric vector of true short-term toxicity probabilities at each dose. \strong{Default:} \code{c(0.01, 0.02, 0.03, 0.06, 0.13, 0.26)}
 #' @param Y_R_sim A numeric vector of true intermediate-term response (ORR) probabilities at each dose. \strong{Default:} \code{c(0.04, 0.05, 0.08, 0.20, 0.35, 0.47)}
-#' @param delta1_sim,delta2_sim Numeric scalars for parameters in the hazard function for time-to-event modeling. \strong{Defaults:} \code{3} and \code{-2}, respectively.
+#' @param delta1_sim,delta2_sim,delta3_sim Numeric scalars for parameters in the hazard function for time-to-event modeling. \strong{Defaults:} \code{3} and \code{-2}, respectively.
 #' @param lambdaT_sim A numeric vector of baseline hazard parameters at each dose for survival modeling. \strong{Default:} \code{c(0.4, 0.1, 0.1, 0.3, 0.3, 0.3)}
 #' @param shape_sim A numeric scalar for the Weibull shape parameter. \strong{Default:} \code{1.5}
 #' @param censored_time A numeric scalar specifying the censoring time (in months, for example). \strong{Default:} \code{24}
@@ -71,7 +71,7 @@ DEMO_design = function(doses = c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85),
                        sigma2_B_sim = 1,
                        Y_T_sim = c(0.01, 0.02, 0.03, 0.06, 0.13, 0.26),
                        Y_R_sim = c(0.04, 0.05, 0.08, 0.20, 0.35, 0.47),
-                       delta1_sim = 3, delta2_sim = -2,
+                       delta1_sim = 3, delta2_sim = -2, delta3_sim = -0.01,
                        lambdaT_sim = c(0.8, 0.6, 0.6, 0.25, 0.2, 0.1),
                        shape_sim = 1.5,
                        censored_time = 24,
@@ -131,7 +131,7 @@ DEMO_design = function(doses = c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85),
                    sigma2_B.true = sigma2_B_sim,
                    Y_T.true=Y_T_sim,
                    Y_R.true=Y_R_sim,
-                   delta1.true = delta1_sim, delta2.true = delta2_sim,
+                   delta1.true = delta1_sim, delta2.true = delta2_sim, delta3.true = delta3_sim,
                    lambdaT.true = lambdaT_sim,
                    shape.true = shape_sim,
                    time_C = censored_time,
@@ -227,11 +227,10 @@ DEMO_design = function(doses = c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85),
                       sigma2_B.true=sigma2_B_sim,
                       Y_T_mean.true=Y_T_sim,
                       Y_R_mean.true=Y_R_sim,
-                      delta1.true = delta1_sim, delta2.true = delta2_sim,
+                      delta1.true = delta1_sim, delta2.true = delta2_sim, delta3.true = delta3_sim,
                       lambdaT.true = lambdaT_sim,
                       shape.true = shape_sim,
                       time_C = censored_time)
-      #shape.true=shape.true, delta1.true=delta1.true, delta2.true=delta2.true)
 
       dat_tmp = cbind(d = rep(admissible_set[ind_tmp], 3),
                       data.frame(Y_out))
@@ -406,7 +405,7 @@ DEMO_design = function(doses = c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85),
                       sigma2_B.true=sigma2_B_sim,
                       Y_T_mean.true=Y_T_sim,
                       Y_R_mean.true=Y_R_sim,
-                      delta1.true = delta1_sim, delta2.true = delta2_sim,
+                      delta1.true = delta1_sim, delta2.true = delta2_sim, delta3.true = delta3_sim,
                       lambdaT.true = lambdaT_sim,
                       shape.true = shape_sim,
                       time_C = censored_time)
@@ -562,7 +561,7 @@ DEMO_design = function(doses = c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85),
                         sigma2_B.true= sigma2_B_sim,
                         Y_T_mean.true=Y_T_sim,
                         Y_R_mean.true=Y_R_sim,
-                        delta1.true = delta1_sim, delta2.true = delta2_sim,
+                        delta1.true = delta1_sim, delta2.true = delta2_sim, delta3.true = delta3_sim,
                         lambdaT.true = lambdaT_sim,
                         shape.true = shape_sim,
                         time_C = censored_time)

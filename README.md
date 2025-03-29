@@ -27,7 +27,7 @@ This package supports:
   - **Stage 1**: BOIN-based exploration with biomarker and toxicity screening.
   - **Stage 2**: Monitors admissible doses for efficacy and safety.
   - **Stage 3**: Optimizes dose selection with RMST.
-- **Endpoints**: Integrates `Y_B` (biomarker), `Y_T` (toxicity), `Y_R` (response), `Y_S` (survival).
+- **Endpoints**: Integrates $Y_B$ (biomarker), $Y_T$ (toxicity), $Y_R$ (response), $Y_S$ (survival).
 
 ---
 
