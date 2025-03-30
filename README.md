@@ -83,7 +83,7 @@ Implements a three-stage Bayesian adaptive design for Phase I/II oncology trials
 - `L2`: Integer. Number of additional acceptable doses to account for plateau scenarios where some doses have similar response rates.
 - `kappa`: Numeric. Plateau threshold for including additional acceptable doses for Stage 3.
 
-#### Returns
+#### Outputs
 
 A list with the following elements:
 
@@ -100,6 +100,10 @@ Estimates the lowest dose (\eqn{\tau_B}) at which biological activity (\eqn{Y_B}
   - `d`: Numeric. Dose levels.
   - `Y_B`: Numeric. Biomarker outcomes.
 - `monitor_cutoff_B`: Numeric. Threshold (e.g., 0.3) for the maximum posterior probability to declare a dose biologically active; if exceeded, returns the dose index, otherwise returns 1.
+
+#### Outputs
+
+A numeric value, `tau_hat`, representing the estimated change point in dose levels.
 
 ---
 
