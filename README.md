@@ -50,7 +50,7 @@ remotes::install_github("cyang728/DEMOdesign")
 ### `DEMO_design()`
 
 #### Description
-Implements a three-stage Bayesian adaptive design for Phase I/II oncology trials. It integrates biomarker ($Y_B$), toxicity ($Y_T$), response ($Y_R$), and survival ($Y_S$) outcomes to identify an Optimal Therapeutic Dose (OTD) that balances safety, efficacy, and long-term survival.
+Implements a three-stage Bayesian adaptive design for Phase 1-2 oncology trials. It integrates biomarker ($Y_B$), toxicity ($Y_T$), response ($Y_R$), and survival ($Y_S$) outcomes to identify an Optimal Therapeutic Dose (OTD). The OTD is defined as the dose that maximizes the restricted mean survival time (RMST) while meeting criteria for safety, clinical effectiveness, and biological activity.
 
 #### Inputs
 
