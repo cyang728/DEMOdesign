@@ -113,7 +113,7 @@ Calibrates the biomarker cutoff parameter ($c_B$) for the DEMO design by running
 
 #### Outputs
 A list with the following elements:
-- `composite_index`: Matrix of composite error indices (sqrt(FP^2 + FN^2)) for each $c_B$ candidate across scenarios.
+- `composite_index`: Matrix of composite error indices (sqrt(FAR^2 + FIR^2)) for each $c_B$ candidate across scenarios.
 - `best_cB`: The optimal $c_B$ value minimizing the mean composite error index.
 
 ---
