@@ -90,20 +90,31 @@ A list with the following elements:
 - `OTD`: The selected Optimal Therapeutic Dose.
 - `trial`: A data frame with patient-level trial data, including assigned dose, biomarker, toxicity, response, and survival outcomes.
 
-### `tau_ms()`
+### `calibrate_cB_fn()`
 
 #### Description
-Estimates the lowest dose (\eqn{\tau_B}) at which biological activity (\eqn{Y_B}) increases significantly in a Phase I trial dataset. Uses a Bayesian model selection approach to compute posterior probabilities of step changes in \eqn{Y_B} across dose levels, returning the dose index where the step occurs or 1 if no significant step is detected based on a cutoff.
+Calibrates the biomarker cutoff parameter ($c_B$) for the DEMO design by running multiple BOIN-based simulations across various scenarios. It evaluates false active rate (FAR) and false inactive rate (FIR) to select an optimal $c_B$ that minimizes a composite error index, ensuring robust biomarker-based dose selection.
 
 #### Inputs
-- `dat`: Data frame. Phase I trial data with columns:
-  - `d`: Numeric. Dose levels.
-  - `Y_B`: Numeric. Biomarker outcomes.
-- `monitor_cutoff_B`: Numeric. Threshold (e.g., 0.3) for the maximum posterior probability to declare a dose biologically active; if exceeded, returns the dose index, otherwise returns 1.
+- `cB_candidate`: Numeric vector. Candidate $c_B$ values to test (e.g., 0.2 to 0.9).
+- `ntrial`: Integer. Number of simulation trials (e.g., 1000).
+- `doses`: Numeric vector. Dose levels to evaluate.
+- `Y_B_sim`: List of numeric vectors. Mean biomarker responses for each simulation scenario.
+- `Y_T_sim`: List of numeric vectors. Toxicity probabilities for each simulation scenario.
+- `Y_R_sim`: List of numeric vectors. Response probabilities for each simulation scenario.
+- `lambdaT_sim`: List of numeric vectors. Weibull scale parameters for each simulation scenario.
+- `sigma2_B_sim`: Numeric vector. Biomarker variances for each simulation scenario.
+- `delta1_sim`, `delta2_sim`, `delta3_sim`: Numeric vectors. Effects of toxicity, response, and biomarker on survival for each scenario.
+- `shape_sim`: Numeric vector. Weibull shape parameters for each simulation scenario.
+- `time_C`: Numeric. Administrative censoring time (e.g., 24 months).
+- `target`: Numeric. Target toxicity rate (e.g., 0.3).
+- `cohortsize`: Integer. Patients per cohort (e.g., 3).
+- `ncohort`: Integer. Number of cohorts in BOIN design (e.g., 10).
 
 #### Outputs
-
-A numeric value, `tau_hat`, representing the estimated change point in dose levels.
+A list with the following elements:
+- `composite_index`: Matrix of composite error indices (sqrt(FP^2 + FN^2)) for each $c_B$ candidate across scenarios.
+- `best_cB`: The optimal $c_B$ value minimizing the mean composite error index.
 
 ---
 
@@ -113,6 +124,50 @@ The following example demonstrates how to use DEMOdesign to simulate a Bayesian 
 
 ``` r
 library(DEMOdesign)
+
+# Calibrate cB with six doses and four scenarios
+calib_result <- calibrate_cB_fn(
+cB_candidate = 2:9/10,
+  ntrial = 1000,
+  doses = c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85),
+  Y_B_sim = list(
+    c(2.00, 2.01, 2.08, 2.76, 3.75, 4.73),
+    c(2.01, 2.09, 2.24, 4.46, 5.29, 5.95),
+    c(2.24, 4.00, 5.77, 5.99, 6.00, 6.00),
+    c(5.04, 5.83, 5.98, 6.00, 6.00, 6.00)
+  ),
+  Y_T_sim = list(
+    c(0.01, 0.02, 0.03, 0.06, 0.13, 0.26),
+    c(0.01, 0.03, 0.04, 0.07, 0.14, 0.28),
+    c(0.01, 0.02, 0.05, 0.10, 0.27, 0.55),
+    c(0.01, 0.06, 0.18, 0.29, 0.51, 0.54)
+  ),
+  Y_R_sim = list(
+    c(0.04, 0.05, 0.08, 0.20, 0.35, 0.47),
+    c(0.04, 0.06, 0.09, 0.23, 0.37, 0.44),
+    c(0.07, 0.14, 0.32, 0.41, 0.42, 0.44),
+    c(0.22, 0.38, 0.41, 0.42, 0.44, 0.45)
+  ),
+  lambdaT_sim = list(
+    c(0.80, 0.60, 0.60, 0.25, 0.20, 0.10),
+    c(0.80, 0.40, 0.30, 0.30, 0.20, 0.35),
+    c(0.40, 0.10, 0.10, 0.30, 0.30, 0.30),
+    c(0.12, 0.10, 0.20, 0.30, 0.30, 0.30)
+  ),
+  sigma2_B_sim = c(1, 1, 1, 1),
+  delta1_sim = c(3, 3, 3, 3),
+  delta2_sim = c(-2, -2, -2, -2),
+  delta3_sim = c(0, 0, 0, 0),
+  shape_sim = c(1.5, 1.5, 1.5, 1.5),
+  time_C = 24,
+  target = 0.3,
+  cohortsize = 3,
+  ncohort = 10,
+  max_per_dose = 9
+)
+
+# View calibrated cB
+print(calib_result$best_cB)
 
 # Run DEMO_design with example data
 result <- DEMO_design(seed = 1,
@@ -138,7 +193,17 @@ head(result$trial)
 
 ### Example Output
 
-#### `$trial` (first 10 rows)
+#### From `calibrate_cB_fn()` 
+
+##### `$best_cB`
+
+``` 
+[1] 0.4
+```
+
+#### From `DEMO_design()` 
+
+##### `$trial` (first 6 rows)
 
 ```txt
    d      Y_B y Y_R        Y_S      event
@@ -148,10 +213,6 @@ head(result$trial)
 4  2 2.004233 0   0  1.3692341     1
 5  2 4.414653 0   0  0.3783198     1
 6  2 2.773593 0   1  5.6059113     1
-7  3 2.035066 0   0  0.5499609     1
-8  3 2.063810 0   0  0.9914613     1
-9  3 3.023836 0   0  1.0389645     1
-10 4 3.564190 0   1  7.2212764     1
 ```
 
 Each row represents a patient with the following outcomes: 
@@ -163,7 +224,7 @@ Each row represents a patient with the following outcomes:
 - `event`: Event indicator (1 = event, 0 = censored) 
 
 
-#### `$N1`, `$N2`, `$N3` 
+##### `$N1`, `$N2`, `$N3` 
 
 ``` 
 $N1 
@@ -180,5 +241,5 @@ $N3
 - `$N3`: Patients in the third stage
 
 
-#### `$OTD` 
+##### `$OTD` 
 ``` $[1] 6 ```
