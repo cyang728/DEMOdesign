@@ -1,7 +1,7 @@
 #' Calibrate Multiple Monitoring Parameters for Multi-Stage Dose-Finding Design
 #'
 #' @description
-#' \code{calibrate_cT_cR_cS_fn()} calibrates the monitoring cutoff parameters (cT, cR, cS) and plateau parameter (kappa) for a multi-stage dose-finding trial by:
+#' \code{calibrate_cT_cR_cS_kappa_fn()} calibrates the monitoring cutoff parameters (cT, cR, cS) and plateau parameter (kappa) for a multi-stage dose-finding trial by:
 #' \enumerate{
 #'   \item Running multiple simulations using the DEMO design for dose exploration.
 #'   \item Evaluating the probability of correct selection (PCS) and sample size across candidate parameter combinations.
@@ -70,7 +70,7 @@
 #'
 #' @export
 
-calibrate_cT_cR_cS_fn = function(
+calibrate_cT_cR_cS_kappa_fn = function(
   cT_candidate = c(0.5, 0.6, 0.7),
   cR_candidate = c(0.6, 0.7, 0.8),
   cS_candidate = c(0.7, 0.8, 0.9),
