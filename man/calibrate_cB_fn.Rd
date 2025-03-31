@@ -60,7 +60,7 @@ calibrate_cB_fn(
 \value{
 A \code{list} with elements:
 \describe{
-\item{\code{composite_index}}{A matrix of composite error indices (sqrt(FP^2 + FN^2)) for each cB candidate across simulation scenarios.}
+\item{\code{composite_index}}{A matrix of composite error indices (sqrt(FAR^2 + FIR^2)) for each cB candidate across simulation scenarios.}
 \item{\code{best_cB}}{The cB value that minimizes the mean composite error index, rounded to 3 decimal places.}
 }
 }
@@ -74,7 +74,7 @@ A \code{list} with elements:
 }
 \details{
 This function evaluates multiple candidate cB values by simulating trials with the BOIN design,
-calculating false positives (FP) and false negatives (FN) based on biomarker cutoffs, and
+calculating false active rate (FAR) and false inactive rate (FIR) based on biomarker cutoffs, and
 determining an optimal cB that minimizes a composite error index. It assumes the existence
 of helper functions \code{BOIN_sim()} and \code{tau_ms()} for simulation and dose selection.
 }
