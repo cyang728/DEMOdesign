@@ -53,7 +53,7 @@
 #' \dontrun{
 #'   # Run with reduced parameters for demonstration
 #'   set.seed(123)
-#'   result <- calibrate_cT_cR_cS_fn(
+#'   result <- calibrate_cT_cR_cS_kappa_fn(
 #'     ntrial = 1000,
 #'     cT_candidate = c(0.5, 0.6, 0.7),
 #'     cR_candidate = c(0.6, 0.7, 0.8),
@@ -221,9 +221,9 @@ calibrate_cT_cR_cS_kappa_fn = function(
   ))
 }
 
-#calibrate_cT_cR_cS_fn(ntrial = 2,
-#                      cT_candidate = c(0.5),
-#                      cR_candidate = c(0.6),
-#                      cS_candidate = c(0.7, 0.9),
-#                      kappa_candidate = c(0.2))
+#calibrate_cT_cR_cS_kappa_fn(ntrial = 2,
+#                            cT_candidate = c(0.5),
+#                            cR_candidate = c(0.6),
+#                            cS_candidate = c(0.7, 0.9),
+#                            kappa_candidate = c(0.2))
 
