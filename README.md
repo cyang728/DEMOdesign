@@ -321,7 +321,7 @@ head(result$trial)
 [1] 0.9
 ```
 
-##### `best_kappa`
+##### `$best_kappa`
 
 ``` 
 [1] 0.3
