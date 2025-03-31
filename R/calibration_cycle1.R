@@ -1,3 +1,32 @@
+#' Calibrate cB parameter for dose-finding simulation
+#'
+#' This function calibrates the cB parameter by running multiple simulations
+#' using the BOIN design and calculating false positives and negatives.
+#'
+#' @param cB_candidate Numeric vector of candidate cB values to test (default: 0.2 to 0.9 by 0.1)
+#' @param ntrial Number of trials to simulate (default: 1000)
+#' @param doses Numeric vector of dose levels (default: c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85))
+#' @param Y_B_sim List of simulated biomarker responses
+#' @param Y_T_sim List of simulated toxicity responses
+#' @param Y_R_sim List of simulated efficacy responses
+#' @param lambdaT_sim List of simulated lambdaT values
+#' @param sigma2_B_sim Vector of biomarker variances
+#' @param delta1_sim Vector of delta1 parameters for survival function
+#' @param delta2_sim Vector of delta2 parameters for survival function
+#' @param delta3_sim Vector of delta3 parameters for survival function
+#' @param shape_sim Vector of shape parameters
+#' @param time_C Observation time (default: 24)
+#' @param target Target toxicity rate (default: 0.3)
+#' @param cohortsize Size of each cohort (default: 3)
+#' @param ncohort Number of cohorts (default: 10)
+#'
+#' @return A list containing:
+#' \itemize{
+#'   \item composite_index: Matrix of composite error indices
+#'   \item best_cB: Optimal cB value with minimum composite index
+#' }
+#'
+#' @export
 calibrate_cB_fn = function(
   cB_candidate = 2:9/10,
   ntrial = 1000,
@@ -34,7 +63,8 @@ calibrate_cB_fn = function(
   time_C = 24,
   target = 0.3,
   cohortsize = 3,
-  ncohort = 10
+  ncohort = 10,
+  max_per_dose = 9
 ){
   num_cB = length(cB_candidate)
   n_dose = length(doses)
@@ -80,10 +110,11 @@ calibrate_cB_fn = function(
           shape.true=shape,
           time_C = time_C,
           target_tox=target,
-          ncohort=10, cohortsize=3, startdose=1, n.earlystop=cohortsize*ncohort,
+          ncohort=ncohort, cohortsize=cohortsize, startdose=1,
+          n.earlystop=cohortsize*ncohort,
           p.saf=0.6*target, p.tox=1.4*target, cutoff.eli=0.95, extrasafe=FALSE,
           titration=F, offset=0.05,
-          max_per_dose = 9,
+          max_per_dose = max_per_dose,
           monitor_cutoff_B = monitor_cutoff_B,
           seed=tr
         )
