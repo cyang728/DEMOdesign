@@ -116,6 +116,47 @@ A list with the following elements:
 - `composite_index`: Matrix of composite error indices (sqrt(FAR^2 + FIR^2)) for each $c_B$ candidate across scenarios.
 - `best_cB`: The optimal $c_B$ value minimizing the mean composite error index.
 
+
+### `calibrate_cT_cR_cS_kappa_fn()`
+
+#### Description
+Calibrates the monitoring cutoff parameters ($c_T$, $c_R$, $c_S$) and plateau parameter ($\kappa$) for the DEMO design by running simulations across multiple scenarios. It evaluates the probability of correct selection (PCS) of the OTD and average sample size, selecting optimal values that maximize a composite index (PCS / sqrt(sample size)).
+
+
+#### Inputs
+- `cT_candidate`: Numeric vector. Candidate $c_T$ values (e.g., c(0.5, 0.6, 0.7)).
+- `cT_candidate`: Numeric vector. Candidate $c_R$ values (e.g., c(0.6, 0.7, 0.8)).
+- `cS_candidate`: Numeric vector. Candidate $c_S$ values (e.g., c(0.7, 0.8, 0.9)).
+- `kappa_candidate`: Numeric vector. Candidate $\kappa$ values (e.g., c(0.2, 0.3, 0.4)).
+- `monitor_cutoff_B`: Numeric. Fixed biomarker cutoff ($c_B$, e.g., 0.4).
+- `ntrial`: Integer. Number of simulation trials (e.g., 1000).
+- `true_OTD_sim`: Numeric vector. True OTDs for each scenario (e.g., c(6, 5, 3, 2)).
+- `doses`: Numeric vector. Dose levels (e.g., c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85)).
+- `Y_B_sim`: List of numeric vectors. Mean biomarker responses per scenario.
+- `Y_T_sim`: List of numeric vectors. Toxicity probabilities per scenario.
+- `Y_R_sim`: List of numeric vectors. Response probabilities per scenario.
+- `lambdaT_sim`: List of numeric vectors. Weibull scale parameters per scenario.
+- `sigma2_B_sim`: Numeric vector. Biomarker variances per scenario.
+- `delta1_sim`, `delta2_sim`, `delta3_sim`: Numeric vectors. Effects on survival per scenario.
+- `shape_sim`: Numeric vector. Weibull shape parameters per scenario.
+- `censored_time`: Numeric. Censoring time (e.g., 24 months).
+- `RMST_followup`: Numeric. RMST follow-up time (e.g., 12 months).
+- `cohort_stage1`, `cohortsize_stage1`: Integers. Stage 1 cohorts and size.
+- `cohort_stage2`, `cohortsize_stage2`: Integers. Stage 2 cohorts and size.
+- `M`: Integer. Maximum sample size.
+- `target_toxicity`: Numeric. Target toxicity rate (e.g., 0.3).
+- `min_acceptable_ORR`: Numeric. Minimum response rate (e.g., 0.2).
+- `min_acceptable_PFS`: Numeric. Minimum RMST (e.g., 3.0).
+- `L1`, `L2`: Integers. Dose selection parameters.
+
+
+#### Outputs
+A list with:
+- `best_cT`: Optimal $c_T$ value.
+- `best_cR`: Optimal $c_R$ value.
+- `best_cS`: Optimal $c_S$ value.
+- `best_kappa`: Optimal $\kappa$ value.
+
 ---
 
 ## 🚀 Example
@@ -169,6 +210,65 @@ cB_candidate = 2:9/10,
 # View calibrated cB
 print(calib_result$best_cB)
 
+# Calibrate monitoring parameters with reduced trials for demonstration
+calib_result2 <- calibrate_cT_cR_cS_kappa_fn(
+  ntrial = 100,  # Reduced for speed; use 1000+ in practice
+  cT_candidate = c(0.5, 0.6),
+  cR_candidate = c(0.6, 0.7),
+  cS_candidate = c(0.7, 0.8),
+  kappa_candidate = c(0.2, 0.3),
+  monitor_cutoff_B = 0.4,
+  true_OTD_sim = c(6, 5, 3, 2),
+  doses = c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85),
+  Y_B_sim = list(
+    c(2.00, 2.01, 2.08, 2.76, 3.75, 4.73),
+    c(2.01, 2.09, 2.24, 4.46, 5.29, 5.95),
+    c(2.24, 4.00, 5.77, 5.99, 6.00, 6.00),
+    c(5.04, 5.83, 5.98, 6.00, 6.00, 6.00)
+  ),
+  Y_T_sim = list(
+    c(0.01, 0.02, 0.03, 0.06, 0.13, 0.26),
+    c(0.01, 0.03, 0.04, 0.07, 0.14, 0.28),
+    c(0.01, 0.02, 0.05, 0.10, 0.27, 0.55),
+    c(0.01, 0.06, 0.18, 0.29, 0.51, 0.54)
+  ),
+  Y_R_sim = list(
+    c(0.04, 0.05, 0.08, 0.20, 0.35, 0.47),
+    c(0.04, 0.06, 0.09, 0.23, 0.37, 0.44),
+    c(0.07, 0.14, 0.32, 0.41, 0.42, 0.44),
+    c(0.22, 0.38, 0.41, 0.42, 0.44, 0.45)
+  ),
+  lambdaT_sim = list(
+    c(0.80, 0.60, 0.60, 0.25, 0.20, 0.10),
+    c(0.80, 0.40, 0.30, 0.30, 0.20, 0.35),
+    c(0.40, 0.10, 0.10, 0.30, 0.30, 0.30),
+    c(0.12, 0.10, 0.20, 0.30, 0.30, 0.30)
+  ),
+  sigma2_B_sim = c(1, 1, 1, 1),
+  delta1_sim = c(3, 3, 3, 3),
+  delta2_sim = c(-2, -2, -2, -2),
+  delta3_sim = c(0, 0, 0, 0),
+  shape_sim = c(1.5, 1.5, 1.5, 1.5),
+  censored_time = 24,
+  RMST_followup = 12,
+  cohort_stage1 = 10,
+  cohortsize_stage1 = 3,
+  cohort_stage2 = 3,
+  cohortsize_stage2 = 3,
+  M = 24,
+  target_toxicity = 0.3,
+  min_acceptable_ORR = 0.2,
+  min_acceptable_PFS = 3.0,
+  L1 = 3,
+  L2 = 4
+)
+
+# View calibrated parameters
+print(calib_result2$best_cT)
+print(calib_result2$best_cR)
+print(calib_result2$best_cS)
+print(calib_result2$best_kappa)
+
 # Run DEMO_design with example data
 result <- DEMO_design(seed = 1,
                       doses = c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85),
@@ -199,6 +299,32 @@ head(result$trial)
 
 ``` 
 [1] 0.4
+```
+
+#### From `calibrate_cT_cR_cS_kappa_fn()` 
+
+##### `$best_cT`
+
+``` 
+[1] 0.6
+```
+
+##### `$best_cR`
+
+``` 
+[1] 0.8
+```
+
+##### `$best_cS`
+
+``` 
+[1] 0.9
+```
+
+##### `best_kappa`
+
+``` 
+[1] 0.3
 ```
 
 #### From `DEMO_design()` 
