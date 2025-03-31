@@ -1,32 +1,55 @@
-#' Calibrate cB parameter for dose-finding simulation
+#' Calibrate cB Parameter for Multi-Stage Dose-Finding Design
 #'
-#' This function calibrates the cB parameter by running multiple simulations
-#' using the BOIN design and calculating false positives and negatives.
+#' @description
+#' \code{calibrate_cB_fn()} calibrates the biomarker cutoff parameter (cB) for a multi-stage dose-finding trial by:
+#' \enumerate{
+#'   \item Running multiple simulations using a BOIN design for dose exploration.
+#'   \item Evaluating false positives and negatives across candidate cB values.
+#'   \item Returning a composite error index and the optimal cB value.
+#' }
 #'
-#' @param cB_candidate Numeric vector of candidate cB values to test (default: 0.2 to 0.9 by 0.1)
-#' @param ntrial Number of trials to simulate (default: 1000)
-#' @param doses Numeric vector of dose levels (default: c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85))
-#' @param Y_B_sim List of simulated biomarker responses
-#' @param Y_T_sim List of simulated toxicity responses
-#' @param Y_R_sim List of simulated efficacy responses
-#' @param lambdaT_sim List of simulated lambdaT values
-#' @param sigma2_B_sim Vector of biomarker variances
-#' @param delta1_sim Vector of delta1 parameters for survival function
-#' @param delta2_sim Vector of delta2 parameters for survival function
-#' @param delta3_sim Vector of delta3 parameters for survival function
-#' @param shape_sim Vector of shape parameters
-#' @param time_C Observation time (default: 24)
-#' @param target Target toxicity rate (default: 0.3)
-#' @param cohortsize Size of each cohort (default: 3)
-#' @param ncohort Number of cohorts (default: 10)
+#' @param cB_candidate A numeric vector of candidate cB values to test. \strong{Default:} \code{2:9/10} (0.2 to 0.9 by 0.1)
+#' @param ntrial An integer specifying the number of simulation trials. \strong{Default:} \code{1000}
+#' @param doses A numeric vector of candidate dose levels. \strong{Default:} \code{c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85)}
+#' @param Y_B_sim A list of numeric vectors of true mean biomarker responses for each simulation scenario. \strong{Default:} \code{list(c(2.00, 2.01, 2.08, 2.76, 3.75, 4.73), c(2.01, 2.09, 2.24, 4.46, 5.29, 5.95), c(2.24, 4.00, 5.77, 5.99, 6.00, 6.00), c(5.04, 5.83, 5.98, 6.00, 6.00, 6.00))}
+#' @param Y_T_sim A list of numeric vectors of true short-term toxicity probabilities for each simulation scenario. \strong{Default:} \code{list(c(0.01, 0.02, 0.03, 0.06, 0.13, 0.26), c(0.01, 0.03, 0.04, 0.07, 0.14, 0.28), c(0.01, 0.02, 0.05, 0.10, 0.27, 0.55), c(0.01, 0.06, 0.18, 0.29, 0.51, 0.54))}
+#' @param Y_R_sim A list of numeric vectors of true intermediate-term response probabilities for each simulation scenario. \strong{Default:} \code{list(c(0.04, 0.05, 0.08, 0.20, 0.35, 0.47), c(0.04, 0.06, 0.09, 0.23, 0.37, 0.44), c(0.07, 0.14, 0.32, 0.41, 0.42, 0.44), c(0.22, 0.38, 0.41, 0.42, 0.44, 0.45))}
+#' @param lambdaT_sim A list of numeric vectors of baseline hazard parameters for each simulation scenario. \strong{Default:} \code{list(c(0.80, 0.60, 0.60, 0.25, 0.20, 0.10), c(0.80, 0.40, 0.30, 0.30, 0.20, 0.35), c(0.40, 0.10, 0.10, 0.30, 0.30, 0.30), c(0.12, 0.10, 0.20, 0.30, 0.30, 0.30))}
+#' @param sigma2_B_sim A numeric vector of true biomarker variances for each simulation scenario. \strong{Default:} \code{c(1, 1, 1, 1)}
+#' @param delta1_sim,delta2_sim,delta3_sim Numeric vectors of parameters in the hazard function for time-to-event modeling for each simulation scenario. \strong{Defaults:} \code{c(3, 3, 3, 3)}, \code{c(-2, -2, -2, -2)}, and \code{c(0, 0, 0, 0)}, respectively
+#' @param shape_sim A numeric vector of Weibull shape parameters for each simulation scenario. \strong{Default:} \code{c(1.5, 1.5, 1.5, 1.5)}
+#' @param time_C A numeric scalar specifying the censoring time (in months). \strong{Default:} \code{24}
+#' @param target A numeric scalar specifying the target toxicity rate. \strong{Default:} \code{0.3}
+#' @param cohortsize An integer specifying the number of patients per cohort. \strong{Default:} \code{3}
+#' @param ncohort An integer specifying the number of cohorts in the BOIN design. \strong{Default:} \code{10}
 #'
-#' @return A list containing:
-#' \itemize{
-#'   \item composite_index: Matrix of composite error indices
-#'   \item best_cB: Optimal cB value with minimum composite index
+#' @details
+#' This function evaluates multiple candidate cB values by simulating trials with the BOIN design,
+#' calculating false positives (FP) and false negatives (FN) based on biomarker cutoffs, and
+#' determining an optimal cB that minimizes a composite error index. It assumes the existence
+#' of helper functions \code{BOIN_sim()} and \code{tau_ms()} for simulation and dose selection.
+#'
+#' @return A \code{list} with elements:
+#' \describe{
+#'   \item{\code{composite_index}}{A matrix of composite error indices (sqrt(FP^2 + FN^2)) for each cB candidate across simulation scenarios.}
+#'   \item{\code{best_cB}}{The cB value that minimizes the mean composite error index, rounded to 3 decimal places.}
+#' }
+#'
+#' @examples
+#' \dontrun{
+#'   # Run with default parameters
+#'   set.seed(123)
+#'   result <- calibrate_cB_fn()
+#'
+#'   # Check optimal cB value
+#'   print(result$best_cB)
+#'
+#'   # Inspect composite index
+#'   print(result$composite_index)
 #' }
 #'
 #' @export
+
 calibrate_cB_fn = function(
   cB_candidate = 2:9/10,
   ntrial = 1000,
