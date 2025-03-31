@@ -2,7 +2,7 @@
 
 export(DEMO_design)
 export(calibrate_cB_fn)
-export(calibrate_cT_cR_cS_fn)
+export(calibrate_cT_cR_cS_kappa_fn)
 importFrom(dplyr,group_by)
 importFrom(dplyr,n)
 importFrom(dplyr,summarise)
