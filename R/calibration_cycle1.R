@@ -92,7 +92,7 @@ calibrate_cB_fn = function(
   num_cB = length(cB_candidate)
   n_dose = length(doses)
 
-  FP = FN = matrix(NA, ncol = num_cB, nrow = length(Y_B_sim))
+  FAR = FIR = matrix(NA, ncol = num_cB, nrow = length(Y_B_sim))
 
   for(i_sim in 1:length(Y_B_sim)){
 
@@ -159,13 +159,13 @@ calibrate_cB_fn = function(
     }
 
     # actual = 1 but proj = 0
-    FP[i_sim,] = apply(results_total[,1:(cutpoint-1),drop=FALSE], 1, sum)/ntrial
+    FAR[i_sim,] = apply(results_total[,1:(cutpoint-1),drop=FALSE], 1, sum)/ntrial
     # actual = 0 but proj = 1
-    FN[i_sim,] = apply(results_total[,(cutpoint+1):n_dose,drop=FALSE], 1, sum)/ntrial
+    FIR[i_sim,] = apply(results_total[,(cutpoint+1):n_dose,drop=FALSE], 1, sum)/ntrial
     #print(i_sim)
   }
 
-  composite_index = sqrt((FP)^2 + (FN)^2)
+  composite_index = sqrt((FAR)^2 + (FIR)^2)
   round(apply(composite_index, 2, mean), 3)
 
   return(list(
