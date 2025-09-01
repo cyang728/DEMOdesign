@@ -85,7 +85,7 @@ DEMO_design = function(doses = c(0.05, 0.10, 0.20, 0.45, 0.65, 0.85),
                        target_toxicity = 0.30,    # Maximum acceptable probability of short-term toxicity
                        min_acceptable_ORR = 0.20, # Minimum acceptable probability of intermediate-term response
                        min_acceptable_PFS = 3.0,  # Minimum acceptable restricted mean survival time
-                       c_B = 0.30,    # Cutoff for early biomarker monitoring
+                       c_B = 0.40,    # Cutoff for early biomarker monitoring
                        c_T = 0.60,    # Cutoff for toxicity monitoring
                        c_R = 0.80,    # Cutoff for overall response rate (ORR) monitoring
                        c_S = 0.90,    # Cutoff for survival monitoring
